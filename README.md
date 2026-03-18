@@ -1,112 +1,99 @@
 # 🧠 Prompt Generator
-**by The Missing Link (thor-thunder)**
 
-> Generate expert-level, copy-paste-ready prompts for any AI platform — powered by DSPy + OpenRouter. 🚀
+> Generate expert-level, copy-paste-ready prompts for any AI platform — powered by DSPy + OpenRouter.
 
----
+**by [The Missing Link (thor-thunder)](https://github.com/thor-thunder)**
 
-## 📋 License
-
-This project is released under the **MIT License** — free to use, modify, and distribute. See `LICENSE` for full text.
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 ---
 
-## ⚙️ Setup
+## What it does
 
-### Step 1 — Create a virtual environment 🐍
+1. ✍️ You type your goal
+2. 🔍 **DSPy AnalyzeGoal** — extracts intent, audience, tone, and constraints
+3. ✨ **DSPy CraftPrompt** — builds an expert prompt tuned for your target platform
+4. 📋 Copy and paste into Claude / ChatGPT / Grok / Gemini / Midjourney / DeepSeek
 
-============================
+---
+
+## Quick Start
+
+> **TL;DR:** Clone the repo, set your API key in `.env`, and run the start script.
+
+### 1. Clone & enter the project
+
+```bash
+git clone https://github.com/thor-thunder/prompt-generator.git
+cd prompt-generator
+```
+
+### 2. Create a virtual environment
+
+```bash
 python3 -m venv venv
-============================
+```
 
----
+### 3. Activate the virtual environment
 
-### Step 2 — Activate the venv 🔌
+**Linux / Mac**
 
-**🐧💻 Linux / Mac**
-
-On Arch Linux or any fish shell:
-
-============================
+```bash
+# fish shell (Arch Linux, etc.)
 source venv/bin/activate.fish
-============================
 
-OR
-
-On Ubuntu, Debian or any bash/zsh shell:
-
-============================
+# bash / zsh (Ubuntu, Debian, etc.)
 source ./venv/bin/activate
-============================
+```
 
----
+**Windows**
 
-**🪟 Windows**
-
-In Command Prompt (cmd.exe):
-
-============================
+```bat
+# Command Prompt
 venv\Scripts\activate.bat
-============================
 
-OR
-
-In PowerShell:
-
-============================
+# PowerShell
 .\venv\Scripts\Activate.ps1
-============================
+```
 
 > 💡 If PowerShell blocks the script, run this first:
-> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+> `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
 
----
+### 4. Install dependencies
 
-### Step 3 — Install requirements 📦
-
-Once the venv is active, run:
-
-============================
+```bash
 pip install -r requirements.txt
-============================
+```
 
----
+### 5. Configure your API key
 
-### Step 4 — Configure your API key 🔑
+Edit `.env` and paste your [OpenRouter](https://openrouter.ai) key:
 
-Edit `.env` and paste your OpenRouter key:
-
-============================
+```env
 OPENROUTER_API_KEY=sk-or-v1-...
-============================
+```
 
-Get a free key at 👉 https://openrouter.ai
+### 6. Run
 
----
-
-## ▶️ Run
-
-After setup, just double-click or run:
-
-**🐧💻 Linux / Mac**
-============================
+**Linux / Mac**
+```bash
 ./start.sh
-============================
+```
 
-**🪟 Windows**
-============================
+**Windows**
+```bat
 start.cmd
-============================
+```
 
-Then open your browser → http://localhost:3000 🌐
+Then open your browser at **http://localhost:3000**
 
-> 💡 The start scripts are self-healing — on a fresh machine they will automatically create the venv and install all dependencies before launching.
+> 💡 The start scripts are self-healing — on a fresh machine they automatically create the venv and install all dependencies before launching.
 
 ---
 
-## 🤖 Generator Models
+## Generator Models
 
-Choose which AI generates your prompt — all routed through OpenRouter with a single API key:
+All models are routed through OpenRouter with a single API key.
 
 | Model | Notes |
 |---|---|
@@ -120,12 +107,9 @@ Choose which AI generates your prompt — all routed through OpenRouter with a s
 
 ---
 
-## 🔧 How it works
+## License
 
-1. ✍️ You type your goal
-2. 🔍 **DSPy AnalyzeGoal** — extracts intent, audience, tone, constraints
-3. ✨ **DSPy CraftPrompt** — builds an expert prompt tuned for your target platform
-4. 📋 Copy and paste into Claude / ChatGPT / Grok / Gemini / Midjourney / DeepSeek
+Released under the **MIT License** — free to use, modify, and distribute. See [`LICENSE`](LICENSE) for full text.
 
 ---
 
