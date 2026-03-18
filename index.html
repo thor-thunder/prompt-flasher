@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Generator by The Missing Link (thor-thunder)</title>
+<style>
+  :root {
+    --bg:      #020d14;
+    --surface: #071a26;
+    --border:  #0e3a52;
+    --accent:  #00b4d8;
+    --accent2: #48cae4;
+    --accent3: #0077b6;
+    --text:    #caf0f8;
+    --muted:   #4a9bb5;
+    --success: #00f5d4;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 24px 64px;
+  }
+  header {
+    text-align: center;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  header img {
+    width: 500px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 20px rgba(0,180,216,0.35);
+  }
+  header .tag {
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    opacity: 0.8;
+  }
+  h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #caf0f8 0%, var(--accent2) 60%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.2;
+  }
+  header p {
+    color: var(--muted);
+    font-size: 0.93rem;
+  }
+  .card {
+    width: 100%;
+    max-width: 720px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    box-shadow: 0 4px 40px rgba(0,119,182,0.12);
+  }
+  label {
+    font-size: 0.75rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 8px;
+  }
+  textarea {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.95rem;
+    padding: 14px 16px;
+    outline: none;
+    transition: border-color 0.2s;
+    resize: vertical;
+    min-height: 120px;
+  }
+  textarea:focus { border-color: var(--accent); }
+
+  /* ── Model pill selector ─────────────────────────────── */
+  .model-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .model-pill {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--muted);
+    padding: 8px 14px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.22s ease;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    letter-spacing: 0.3px;
+  }
+  .model-pill:hover {
+    border-color: var(--accent);
+    color: var(--text);
+  }
+  .model-pill.active {
+    border-color: var(--success);
+    background: rgba(0,245,212,0.09);
+    color: var(--success);
+    font-weight: 600;
+    transform: translateY(-1px) scale(1.03);
+    box-shadow: 0 0 14px rgba(0,245,212,0.18);
+  }
+  .free-badge {
+    font-size: 0.62rem;
+    background: rgba(0,245,212,0.14);
+    color: var(--success);
+    border-radius: 4px;
+    padding: 1px 5px;
+    letter-spacing: 0.6px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .model-pill.active .free-badge {
+    background: rgba(0,245,212,0.25);
+  }
+
+  /* ── Platform buttons ────────────────────────────────── */
+  .platforms {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .platform-btn {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--muted);
+    padding: 10px 6px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    font-family: inherit;
+    letter-spacing: 0.5px;
+  }
+  .platform-btn:hover { border-color: var(--accent); color: var(--text); }
+  .platform-btn.active {
+    border-color: var(--accent);
+    background: rgba(0,180,216,0.1);
+    color: var(--accent2);
+    font-weight: 600;
+  }
+
+  button.generate {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(90deg, var(--accent3), var(--accent));
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: opacity 0.2s, transform 0.1s;
+    font-family: inherit;
+    box-shadow: 0 0 16px rgba(0,180,216,0.3);
+  }
+  button.generate:hover { opacity: 0.88; }
+  button.generate:active { transform: scale(0.99); }
+  button.generate:disabled { opacity: 0.35; cursor: not-allowed; }
+  .output-section { display: none; flex-direction: column; gap: 12px; }
+  .output-section.visible { display: flex; }
+  .output-header { display: flex; justify-content: space-between; align-items: center; }
+  .copy-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--muted);
+    font-size: 0.8rem;
+    padding: 6px 14px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+  }
+  .copy-btn:hover { border-color: var(--success); color: var(--success); }
+  .copy-btn.copied { border-color: var(--success); color: var(--success); }
+  #output {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: 'Consolas', 'Fira Code', monospace;
+    font-size: 0.88rem;
+    padding: 16px;
+    min-height: 160px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .spinner {
+    display: none;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.88rem;
+    padding: 8px;
+  }
+  .spinner.active { display: block; }
+  .dot { animation: blink 1.2s infinite; }
+  .dot:nth-child(2) { animation-delay: 0.2s; }
+  .dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes blink { 0%,80%,100%{opacity:0} 40%{opacity:1} }
+  .error { color: #f87171; font-size: 0.88rem; padding: 4px 0; display: none; }
+  .error.visible { display: block; }
+</style>
+</head>
+<body>
+
+<header>
+  <img src="/logo.jpg" alt="The Missing Link">
+  <div class="tag">The Missing Link · thor-thunder</div>
+  <h1>Prompt Generator</h1>
+  <p>Describe your goal — get a precision-engineered prompt.</p>
+</header>
+
+<div class="card">
+
+  <!-- 1. Goal -->
+  <div>
+    <label>Your Goal</label>
+    <textarea id="goal" placeholder="e.g. Write a cold email to a startup founder offering a SaaS product for HR teams..." rows="5"></textarea>
+  </div>
+
+  <!-- 2. Generator Model -->
+  <div>
+    <label>Generator Model</label>
+    <div class="model-pills">
+      <button class="model-pill active" data-gen="auto">
+        AutoRouter <span class="free-badge">FREE</span>
+      </button>
+      <button class="model-pill" data-gen="claude">Claude Sonnet 4.6</button>
+      <button class="model-pill" data-gen="gemini">Gemini 3 Flash</button>
+      <button class="model-pill" data-gen="nemotron">Nemotron 49B v1.5</button>
+      <button class="model-pill" data-gen="minimax">MiniMax M2.5</button>
+      <button class="model-pill" data-gen="o4mini">o4-mini</button>
+      <button class="model-pill" data-gen="deepseek">DeepSeek V3.2</button>
+    </div>
+  </div>
+
+  <!-- 3. Target Platform -->
+  <div>
+    <label>Target Platform</label>
+    <div class="platforms">
+      <button class="platform-btn active" data-platform="claude">Claude</button>
+      <button class="platform-btn" data-platform="chatgpt">ChatGPT</button>
+      <button class="platform-btn" data-platform="grok">Grok</button>
+      <button class="platform-btn" data-platform="gemini">Gemini</button>
+      <button class="platform-btn" data-platform="midjourney">Midjourney</button>
+      <button class="platform-btn" data-platform="deepseek">DeepSeek</button>
+    </div>
+  </div>
+
+  <div class="error" id="error"></div>
+  <div class="spinner" id="spinner">Generating<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></div>
+
+  <button class="generate" id="generateBtn" onclick="generate()">Generate Prompt</button>
+
+  <div class="output-section" id="outputSection">
+    <div class="output-header">
+      <label style="margin:0">Generated Prompt</label>
+      <button class="copy-btn" id="copyBtn" onclick="copy()">Copy</button>
+    </div>
+    <div id="output"></div>
+  </div>
+</div>
+
+<script>
+  let selectedPlatform  = 'claude';
+  let selectedGenerator = 'auto';
+
+  document.querySelectorAll('.platform-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.platform-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedPlatform = btn.dataset.platform;
+    });
+  });
+
+  document.querySelectorAll('.model-pill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.model-pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedGenerator = btn.dataset.gen;
+    });
+  });
+
+  async function generate() {
+    const goal = document.getElementById('goal').value.trim();
+    const error = document.getElementById('error');
+    const spinner = document.getElementById('spinner');
+    const btn = document.getElementById('generateBtn');
+    const outputSection = document.getElementById('outputSection');
+    const output = document.getElementById('output');
+
+    error.classList.remove('visible');
+    if (!goal) { error.textContent = 'Enter your goal first.'; error.classList.add('visible'); return; }
+
+    btn.disabled = true;
+    spinner.classList.add('active');
+    outputSection.classList.remove('visible');
+
+    try {
+      const res = await fetch('/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ goal, platform: selectedPlatform, generator: selectedGenerator }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail ?? 'Server error');
+      output.textContent = data.prompt;
+      outputSection.classList.add('visible');
+      document.getElementById('copyBtn').textContent = 'Copy';
+      document.getElementById('copyBtn').classList.remove('copied');
+    } catch (err) {
+      error.textContent = err.message;
+      error.classList.add('visible');
+    } finally {
+      btn.disabled = false;
+      spinner.classList.remove('active');
+    }
+  }
+
+  function copy() {
+    const text = document.getElementById('output').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('copyBtn');
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  document.getElementById('goal').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && e.ctrlKey) generate();
+  });
+</script>
+
+</body>
+</html>
