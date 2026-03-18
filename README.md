@@ -67,7 +67,12 @@ pip install -r requirements.txt
 
 ### 5. Configure your API key
 
-Edit `.env` and paste your [OpenRouter](https://openrouter.ai) key:
+Rename `example.env` to `.env`, then open it and paste your OpenRouter key.
+Get one for free at **https://www.openrouter.ai**
+
+```bash
+mv example.env .env
+```
 
 ```env
 OPENROUTER_API_KEY=sk-or-v1-...
